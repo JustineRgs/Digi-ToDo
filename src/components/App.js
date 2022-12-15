@@ -62,6 +62,7 @@ function App() {
     };
     await Coopernet.addTask(newTask, null);
     setTasks([...tasks, newTask]);
+    setdisplayNewTask(false);
   };
 
   /**
@@ -129,7 +130,7 @@ function App() {
 
   return (
     <div className="App container">
-      <h1>Liste des tâches</h1>
+      <h1>Votre To-Do List</h1>
       <button
         onClick={() => {
           handleClickNewTask();
@@ -144,16 +145,32 @@ function App() {
       {displayForm && (
         <FormEditTask handleSubmitEditTask={handleSubmitEditTask} />
       )}
-      {tasks.map((task, index) => (
-        <Task
-          task={task}
-          key={Math.random() * 100000}
-          handleClickDeleteTask={handleClickDeleteTask}
-          handleClickValidateTask={handleClickValidateTask}
-          handleClickEditButton={handleClickEditButton}
-          index={index}
-        />
-      ))}
+      <h2 className="mt-5 mb-6">Vos tâches en cours</h2>
+      {tasks
+        .filter((task) => parseInt(task.isValidate) === 0)
+        .map((task, index) => (
+          <Task
+            task={task}
+            key={Math.random() * 100000}
+            handleClickDeleteTask={handleClickDeleteTask}
+            handleClickValidateTask={handleClickValidateTask}
+            handleClickEditButton={handleClickEditButton}
+            index={index}
+          />
+        ))}
+      <h2 className="mt-5 mb-3">Vos tâches terminées</h2>
+      {tasks
+        .filter((task) => parseInt(task.isValidate) === 1)
+        .map((task, index) => (
+          <Task
+            task={task}
+            key={Math.random() * 100000}
+            handleClickDeleteTask={handleClickDeleteTask}
+            handleClickValidateTask={handleClickValidateTask}
+            handleClickEditButton={handleClickEditButton}
+            index={index}
+          />
+        ))}
     </div>
   );
 }
